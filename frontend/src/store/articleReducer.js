@@ -1,4 +1,4 @@
-import articles from "../data/data.json";
+// import articles from "../data/data.json";
 
 const LOAD_ARTICLES = "article/loadArticles";
 const ADD_ARTICLE = "article/addArticle";
@@ -26,7 +26,7 @@ export const writeArticle = (payload) => async (dispatch) => {
   }
 };
 
-export const loadArticles = () => {
+export const loadArticles = (articles) => {
   return {
     type: LOAD_ARTICLES,
     articles,
@@ -40,17 +40,19 @@ export const addArticle = (article) => {
   };
 };
 
-const initialState = { entries: [], isLoading: true };
+const initialState = { entries: {}, isLoading: true };
 
 const articleReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_ARTICLES:
-      return { ...state, entries: [...action.articles] };
+      const data = {}
+      action.articles.forEach((article => data[article.id] = article))
+      return { ...state, entries: {...data}};
     case ADD_ARTICLE:
       return { ...state, entries: [...state.entries, action.article] };
     default:
       return state;
   }
 };
-
+// [...action.articles]
 export default articleReducer;
